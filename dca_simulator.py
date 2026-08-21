@@ -105,6 +105,12 @@ CHANNELS = {
 
 RISK_FREE_RATE = 0.05  # lãi suất phi rủi ro (5%/năm)
 
+def hex_to_rgba(hex_color: str, alpha: float) -> str:
+    """Chuyển mã màu HEX sang chuỗi rgba() mà Plotly chấp nhận."""
+    hex_color = hex_color.lstrip("#")
+    r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
+    return f"rgba({r},{g},{b},{alpha})"
+
 
 # ════════════════════════════════════════════════════════════
 # CLASS: DataLoader
@@ -336,7 +342,7 @@ class MetricsVisualizer:
                     x=np.concatenate([x_fwd, x_fwd[::-1]]),
                     y=np.concatenate([r["p90"] / 1e6, r["p10"][::-1] / 1e6]),
                     fill="toself",
-                    fillcolor=cfg["color"] + "22",
+                    fillcolor=hex_to_rgba(cfg["color"], 0.13),
                     line=dict(color="rgba(0,0,0,0)"),
                     name=f"{name_s} (P10–P90)",
                     showlegend=True,
@@ -378,7 +384,7 @@ class MetricsVisualizer:
                 name=name_s,
                 line=dict(color=cfg["color"], width=2),
                 fill="tozeroy",
-                fillcolor=cfg["color"] + "33",
+                fillcolor=hex_to_rgba(cfg["color"], 0.20),
                 hovertemplate="%{y:.1f}%<extra>" + ch + "</extra>",
             ))
 
